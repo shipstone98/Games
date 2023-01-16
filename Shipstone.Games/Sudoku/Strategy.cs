@@ -13,6 +13,11 @@ namespace Shipstone.Games.Sudoku
         /// <summary>
         /// Represents a naked single. This occurs when a cell contains only a single candidate.
         /// </summary>
-        NakedSingle
+        NakedSingle,
+
+        /// <summary>
+        /// Represents a hidden single. This occurs when, for a single candidate, a row, column, or block contains only a single cell with that candidate.
+        /// </summary>
+        HiddenSingle
     }
 }
