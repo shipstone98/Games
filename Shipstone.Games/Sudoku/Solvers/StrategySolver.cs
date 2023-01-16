@@ -17,6 +17,8 @@ namespace Shipstone.Games.Sudoku.Solvers
             {
                 case Strategy.FullHouse:
                     return new FullHouseSolver(solver);
+                case Strategy.NakedSingle:
+                    return new NakedSingleSolver(solver);
                 default:
                     throw new NotImplementedException();
             }

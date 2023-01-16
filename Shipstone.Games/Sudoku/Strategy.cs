@@ -8,6 +8,11 @@ namespace Shipstone.Games.Sudoku
         /// <summary>
         /// Represents a full house. This occurs when a row, column, or block contains only a single empty cell.
         /// </summary>
-        FullHouse
+        FullHouse,
+
+        /// <summary>
+        /// Represents a naked single. This occurs when a cell contains only a single candidate.
+        /// </summary>
+        NakedSingle
     }
 }

@@ -77,7 +77,7 @@ namespace Shipstone.GamesTest.Sudoku
         }
 
         [TestMethod]
-        public void TestSolveSingle_FullHouse_Block()
+        public void TestSolveSingle_FullHouse_ContainsBlock()
         {
             // Arrange
             const int ROW = 8;
@@ -101,7 +101,7 @@ namespace Shipstone.GamesTest.Sudoku
         }
 
         [TestMethod]
-        public void TestSolveSingle_FullHouse_Column()
+        public void TestSolveSingle_FullHouse_ContainsColumn()
         {
             // Arrange
             const int ROW = 7;
@@ -125,7 +125,7 @@ namespace Shipstone.GamesTest.Sudoku
         }
 
         [TestMethod]
-        public void TestSolveSingle_FullHouse_Row()
+        public void TestSolveSingle_FullHouse_ContainsRow()
         {
             // Arrange
             const int ROW = 4;
@@ -145,6 +145,71 @@ namespace Shipstone.GamesTest.Sudoku
 
             // Assert
             Assert.IsTrue(isSolved);
+            solver.Sudoku.AssertEqual(cells);
+        }
+
+        [TestMethod]
+        public void TestSolveSingle_FullHouse_NotContains()
+        {
+            // Arrange
+            Grid grid =
+                Internals.ParseGrid(
+                    "412736589000000106568010370000850210100000008087090000030070865800000000000908401",
+                    out int[,] cells
+                );
+
+            StrategicSolver solver = new(grid);
+
+            // Act
+            bool isSolved = solver.SolveSingle(Strategy.FullHouse);
+
+            // Assert
+            Assert.IsFalse(isSolved);
+            solver.Sudoku.AssertEqual(cells);
+        }
+
+        [TestMethod]
+        public void TestSolveSingle_NakedSingle_Contains()
+        {
+            // Arrange
+            const int ROW = 5;
+            const int COLUMN = 6;
+            const int VALUE = 6;
+
+            Grid grid =
+                Internals.ParseGrid(
+                    "412736589000000106568010370000850210100000008087090000030070865800000000000908401",
+                    out int[,] cells
+                );
+
+            StrategicSolver solver = new(grid);
+            cells[ROW, COLUMN] = VALUE;
+
+            // Act
+            bool isSolved = solver.SolveSingle(Strategy.NakedSingle);
+
+            // Assert
+            Assert.IsTrue(isSolved);
+            solver.Sudoku.AssertEqual(cells);
+        }
+
+        [TestMethod]
+        public void TestSolveSingle_NakedSingle_NotContains()
+        {
+            // Arrange
+            Grid grid =
+                Internals.ParseGrid(
+                    "984000000002500040001904002006097230003602000209035610195768423427351896638009751",
+                    out int[,] cells
+                );
+
+            StrategicSolver solver = new(grid);
+
+            // Act
+            bool isSolved = solver.SolveSingle(Strategy.NakedSingle);
+
+            // Assert
+            Assert.IsFalse(isSolved);
             solver.Sudoku.AssertEqual(cells);
         }
 #endregion
