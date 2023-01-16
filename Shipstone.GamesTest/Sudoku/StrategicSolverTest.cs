@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Shipstone.Games.Sudoku;
@@ -74,6 +75,8 @@ namespace Shipstone.GamesTest.Sudoku
             // Assert
             Assert.AreEqual(MESSAGE, exMin.Message);
             Assert.AreEqual(MESSAGE, exMax.Message);
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEmpty();
         }
 
         [TestMethod]
@@ -83,6 +86,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 8;
             const int COLUMN = 5;
             const int VALUE = 6;
+            const Strategy STRATEGY = Strategy.FullHouse;
 
             Grid grid = Internals.ParseGrid(
                 "800739006370465000040182009000600040054300610060500000400853070000271064100940002",
@@ -93,10 +97,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.FullHouse);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -107,6 +115,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 7;
             const int COLUMN = 4;
             const int VALUE = 1;
+            const Strategy STRATEGY = Strategy.FullHouse;
 
             Grid grid = Internals.ParseGrid(
                 "200060000083090000700821900006073000090682040000450100008935004000000290000040008",
@@ -117,10 +126,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.FullHouse);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -131,6 +144,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 4;
             const int COLUMN = 7;
             const int VALUE = 1;
+            const Strategy STRATEGY = Strategy.FullHouse;
 
             Grid grid = Internals.ParseGrid(
                 "207000000080090000030600800008064900692785304001320500009001020000040090000000408",
@@ -141,10 +155,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.FullHouse);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -164,6 +182,7 @@ namespace Shipstone.GamesTest.Sudoku
 
             // Assert
             Assert.IsFalse(isSolved);
+            Assert.AreEqual(0, solver.Moves.Count);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -174,6 +193,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 5;
             const int COLUMN = 6;
             const int VALUE = 6;
+            const Strategy STRATEGY = Strategy.NakedSingle;
 
             Grid grid = Internals.ParseGrid(
                 "412736589000000106568010370000850210100000008087090000030070865800000000000908401",
@@ -184,10 +204,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.NakedSingle);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -207,6 +231,7 @@ namespace Shipstone.GamesTest.Sudoku
 
             // Assert
             Assert.IsFalse(isSolved);
+            Assert.AreEqual(0, solver.Moves.Count);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -217,6 +242,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 0;
             const int COLUMN = 2;
             const int VALUE = 1;
+            const Strategy STRATEGY = Strategy.HiddenSingle;
 
             Grid grid = Internals.ParseGrid(
                 "000000403026009000005870000009032000000700000162000000010020560000900000050000107",
@@ -227,10 +253,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.HiddenSingle);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -241,6 +271,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 3;
             const int COLUMN = 2;
             const int VALUE = 6;
+            const Strategy STRATEGY = Strategy.HiddenSingle;
 
             Grid grid = Internals.ParseGrid(
                 "000100200210300900860700000000270083082934760730006000008003017075000040001007000",
@@ -251,10 +282,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.HiddenSingle);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -265,6 +300,7 @@ namespace Shipstone.GamesTest.Sudoku
             const int ROW = 2;
             const int COLUMN = 3;
             const int VALUE = 6;
+            const Strategy STRATEGY = Strategy.HiddenSingle;
 
             Grid grid = Internals.ParseGrid(
                 "028007000016083070000020851137290000000730000000046307290070000000860140000300700",
@@ -275,10 +311,14 @@ namespace Shipstone.GamesTest.Sudoku
             cells[ROW, COLUMN] = VALUE;
 
             // Act
-            bool isSolved = solver.SolveSingle(Strategy.HiddenSingle);
+            bool isSolved = solver.SolveSingle(STRATEGY);
 
             // Assert
             Assert.IsTrue(isSolved);
+            Move move = solver.Moves.Single();
+            move.AssertEqual(1, solver, STRATEGY, 0);
+            MoveLocation location = move.Locations.Single();
+            location.AssertEqual(ROW, COLUMN, VALUE);
             solver.Sudoku.AssertEqual(cells);
         }
 
@@ -298,6 +338,7 @@ namespace Shipstone.GamesTest.Sudoku
 
             // Assert
             Assert.IsFalse(isSolved);
+            Assert.AreEqual(0, solver.Moves.Count);
             solver.Sudoku.AssertEqual(cells);
         }
 #endregion

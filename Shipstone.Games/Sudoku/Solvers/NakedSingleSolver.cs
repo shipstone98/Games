@@ -5,9 +5,10 @@ namespace Shipstone.Games.Sudoku.Solvers
 {
     internal class NakedSingleSolver : StrategySolver
     {
-        internal NakedSingleSolver(StrategicSolver solver) : base(solver) { }
+        internal NakedSingleSolver(StrategicSolver solver)
+            : base(solver, Strategy.NakedSingle) { }
 
-        internal override bool Solve()
+        private protected override bool SolveMove(out IReadOnlyCollection<MoveLocation> locations)
         {
             for (int row = 0; row < 9; row ++)
             {
@@ -21,14 +22,19 @@ namespace Shipstone.Games.Sudoku.Solvers
                         continue;
                     }
 
-                    this._Solver._Grid._Cells[row, column] =
-                        candidates.First();
-
+                    int n = candidates.First();
+                    this._Solver._Grid._Cells[row, column] = n;
                     this._Solver._Candidates[row, column] = null;
+
+                    MoveLocation location =
+                        new MoveLocation(row, column, n, null);
+
+                    locations = new MoveLocation[] { location };
                     return true;
                 }
             }
 
+            locations = null;
             return false;
         }
     }

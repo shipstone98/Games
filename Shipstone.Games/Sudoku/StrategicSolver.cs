@@ -12,6 +12,13 @@ namespace Shipstone.Games.Sudoku
     {
         internal readonly ISet<int>[,] _Candidates;
         internal readonly Grid _Grid;
+        internal readonly List<Move> _Moves;
+
+        /// <summary>
+        /// Gets a read-only list of moves made by the <see cref="StrategicSolver" />.
+        /// </summary>
+        /// <value>A read-only list of moves made by the <see cref="StrategicSolver" />.</value>
+        public IReadOnlyList<Move> Moves => this._Moves;
 
         /// <summary>
         /// Gets the sudoku that the <see cref="StrategicSolver" /> is attempting to solve.
@@ -58,6 +65,7 @@ namespace Shipstone.Games.Sudoku
 
             this._Candidates = candidates;
             this._Grid = grid;
+            this._Moves = new List<Move>();
         }
 
         bool ISolver.Solve() => throw new NotImplementedException();

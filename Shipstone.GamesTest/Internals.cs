@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Shipstone.Games.Sudoku;
@@ -21,6 +22,34 @@ namespace Shipstone.GamesTest
                     Assert.AreEqual(0, sudoku[row, column]);
                 }
             }
+        }
+
+        internal static void AssertEqual(
+            this MoveLocation location,
+            int row,
+            int column,
+            int addedNumber,
+            params int[] removedCandidates
+        )
+        {
+            Assert.AreEqual(addedNumber, location.AddedNumber);
+            Assert.AreEqual(column, location.Column);
+            Assert.IsTrue(removedCandidates.SequenceEqual(location.RemovedCandidates));
+            Assert.AreEqual(row, location.Row);
+        }
+
+        internal static void AssertEqual(
+            this Move move,
+            int locationCount,
+            StrategicSolver solver,
+            Strategy strategy,
+            int index
+        )
+        {
+            Assert.AreEqual(index, move.Index);
+            Assert.AreEqual(locationCount, move.Locations.Count);
+            Assert.IsTrue(Object.ReferenceEquals(solver, move.Solver));
+            Assert.AreEqual(strategy, move.Strategy);
         }
 
         internal static void AssertEqual(

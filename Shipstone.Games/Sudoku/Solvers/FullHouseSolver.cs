@@ -6,12 +6,15 @@ namespace Shipstone.Games.Sudoku.Solvers
 {
     internal class FullHouseSolver : StrategySolver
     {
-        internal FullHouseSolver(StrategicSolver solver) : base(solver) { }
+        internal FullHouseSolver(StrategicSolver solver)
+            : base(solver, Strategy.FullHouse) { }
 
-        internal override bool Solve() =>
-            this.SolveRow() || this.SolveColumn() || this.SolveBlock();
+        private protected override bool SolveMove(out IReadOnlyCollection<MoveLocation> locations) =>
+            this.SolveMoveRow(out locations) ||
+            this.SolveMoveColumn(out locations) ||
+            this.SolveMoveBlock(out locations);
 
-        private bool SolveBlock()
+        private bool SolveMoveBlock(out IReadOnlyCollection<MoveLocation> locations)
         {
             for (int startRow = 0; startRow < 9; startRow += 3)
             {
@@ -45,23 +48,26 @@ namespace Shipstone.Games.Sudoku.Solvers
                     if (emptyIndices.Count == 1)
                     {
                         Tuple<int, int> index = emptyIndices.First();
+                        int row = index.Item1;
+                        int column = index.Item2;
+                        int n = this._Solver._Candidates[row, column].First();
+                        this._Solver._Candidates[row, column] = null;
+                        this._Solver._Grid[row, column] = n;
 
-                        int n =
-                            this._Solver._Candidates[index.Item1, index.Item2].First();
+                        MoveLocation location =
+                            new MoveLocation(row, column, n, null);
 
-                        this._Solver._Candidates[index.Item1, index.Item2] =
-                            null;
-
-                        this._Solver._Grid[index.Item1, index.Item2] = n;
+                        locations = new MoveLocation[] { location };
                         return true;
                     }
                 }
             }
 
+            locations = null;
             return false;
         }
 
-        private bool SolveColumn()
+        private bool SolveMoveColumn(out IReadOnlyCollection<MoveLocation> locations)
         {
             for (int column = 0; column < 9; column ++)
             {
@@ -81,14 +87,20 @@ namespace Shipstone.Games.Sudoku.Solvers
                     int n = this._Solver._Candidates[row, column].First();
                     this._Solver._Candidates[row, column] = null;
                     this._Solver._Grid[row, column] = n;
+
+                    MoveLocation location =
+                        new MoveLocation(row, column, n, null);
+
+                    locations = new MoveLocation[] { location };
                     return true;
                 }
             }
 
+            locations = null;
             return false;
         }
 
-        private bool SolveRow()
+        private bool SolveMoveRow(out IReadOnlyCollection<MoveLocation> locations)
         {
             for (int row = 0; row < 9; row ++)
             {
@@ -108,10 +120,16 @@ namespace Shipstone.Games.Sudoku.Solvers
                     int n = this._Solver._Candidates[row, column].First();
                     this._Solver._Candidates[row, column] = null;
                     this._Solver._Grid[row, column] = n;
+
+                    MoveLocation location =
+                        new MoveLocation(row, column, n, null);
+
+                    locations = new MoveLocation[] { location };
                     return true;
                 }
             }
 
+            locations = null;
             return false;
         }
     }
