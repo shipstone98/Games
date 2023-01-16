@@ -123,5 +123,23 @@ namespace Shipstone.GamesTest
 
             return grid;
         }
+
+        internal static Grid ParseGrid(String s, out int[,] cells)
+        {
+            Grid grid = new();
+            cells = new int[9, 9];
+
+            for (int i = 0, row = 0; row < 9; row ++)
+            {
+                for (int column = 0; column < 9; column ++, i ++)
+                {
+                    int n = s[i] - '0';
+                    grid[row, column] = n;
+                    cells[row, column] = n;
+                }
+            }
+
+            return grid;
+        }
     }
 }
