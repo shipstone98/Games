@@ -7,7 +7,7 @@ namespace Shipstone.Games.Sudoku
     /// </summary>
     public class Grid : IReadOnlySudoku, ISudoku
     {
-        private readonly int[,] _Cells;
+        internal readonly int[,] _Cells;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Grid" /> is complete.
