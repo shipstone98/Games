@@ -8,7 +8,7 @@ namespace Shipstone.Games.Sudoku
         /// <summary>
         /// Represents a full house. This occurs when a row, column, or block contains only a single empty cell.
         /// </summary>
-        FullHouse,
+        FullHouse = 1,
 
         /// <summary>
         /// Represents a naked single. This occurs when a cell contains only a single candidate.
@@ -18,6 +18,11 @@ namespace Shipstone.Games.Sudoku
         /// <summary>
         /// Represents a hidden single. This occurs when, for a single candidate, a row, column, or block contains only a single cell with that candidate.
         /// </summary>
-        HiddenSingle
+        HiddenSingle,
+
+        /// <summary>
+        /// Represents a pointing locked candidate. This occurs when, for a single block, a candidate appears in only either a single row or column.
+        /// </summary>
+        PointingCandidate
     }
 }

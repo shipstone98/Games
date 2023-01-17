@@ -41,7 +41,7 @@ namespace Shipstone.Games.Sudoku
             int row,
             int column,
             int addedNumber,
-            IReadOnlyCollection<int> removedCandidates
+            params int[] removedCandidates
         )
         {
             this._AddedNumber = addedNumber;
