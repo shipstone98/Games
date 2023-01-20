@@ -372,9 +372,8 @@ namespace Shipstone.GamesTest.Sudoku
 
             // Assert
             Assert.IsTrue(isSolved);
-            Assert.AreEqual(1, solver.Moves.Count);
             solver.Sudoku.AssertEqual(cells);
-            Move move = solver.Moves.First();
+            Move move = solver.Moves.Single();
             move.AssertEqual(6, solver, STRATEGY, 0);
 
             foreach (MoveLocation location in move.Locations)
@@ -417,9 +416,8 @@ namespace Shipstone.GamesTest.Sudoku
 
             // Assert
             Assert.IsTrue(isSolved);
-            Assert.AreEqual(1, solver.Moves.Count);
             solver.Sudoku.AssertEqual(cells);
-            Move move = solver.Moves.First();
+            Move move = solver.Moves.Single();
             move.AssertEqual(6, solver, STRATEGY, 0);
 
             foreach (MoveLocation location in move.Locations)
