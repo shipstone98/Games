@@ -8,7 +8,7 @@ namespace Shipstone.Games.Sudoku.Solvers
         internal PointingCandidateSolver(StrategicSolver solver)
             : base(solver, Strategy.PointingCandidate) { }
 
-        private protected override bool SolveMove(out IReadOnlyCollection<MoveLocation> locations)
+        private protected override bool SolveMove(ISet<MoveLocation> locations)
         {
             for (int startRow = 0; startRow < 9; startRow += 3)
             {
@@ -17,7 +17,7 @@ namespace Shipstone.Games.Sudoku.Solvers
                     for (int n = 1; n < 10; n ++)
                     {
                         if (this.SolveMoveBlock(
-                            out locations,
+                            locations,
                             startRow,
                             startColumn,
                             n
@@ -29,12 +29,11 @@ namespace Shipstone.Games.Sudoku.Solvers
                 }
             }
 
-            locations = null;
             return false;
         }
 
         private bool SolveMoveBlock(
-            out IReadOnlyCollection<MoveLocation> locations,
+            ISet<MoveLocation> locations,
             int startRow,
             int startColumn,
             int n
@@ -90,15 +89,11 @@ namespace Shipstone.Games.Sudoku.Solvers
 
                 if (columns.Count > 0)
                 {
-                    HashSet<MoveLocation> locationSet =
-                        new HashSet<MoveLocation>();
-
                     foreach (int column in columns)
                     {
-                        locationSet.Add(new MoveLocation(row, column, 0, n));
+                        locations.Add(new MoveLocation(row, column, 0, n));
                     }
 
-                    locations = locationSet;
                     return true;
                 }
             }
@@ -129,20 +124,15 @@ namespace Shipstone.Games.Sudoku.Solvers
 
                 if (rows.Count > 0)
                 {
-                    HashSet<MoveLocation> locationSet =
-                        new HashSet<MoveLocation>();
-
                     foreach (int row in rows)
                     {
-                        locationSet.Add(new MoveLocation(row, column, 0, n));
+                        locations.Add(new MoveLocation(row, column, 0, n));
                     }
 
-                    locations = locationSet;
                     return true;
                 }
             }
 
-            locations = null;
             return false;
         }
     }

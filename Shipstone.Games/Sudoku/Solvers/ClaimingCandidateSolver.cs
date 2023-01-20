@@ -8,11 +8,10 @@ namespace Shipstone.Games.Sudoku.Solvers
         internal ClaimingCandidateSolver(StrategicSolver solver)
             : base(solver, Strategy.ClaimingCandidate) { }
 
-        private protected override bool SolveMove(out IReadOnlyCollection<MoveLocation> locations) =>
-            this.SolveMoveRow(out locations) ||
-            this.SolveMoveColumn(out locations);
+        private protected override bool SolveMove(ISet<MoveLocation> locations) =>
+            this.SolveMoveRow(locations) || this.SolveMoveColumn(locations);
 
-        private bool SolveMoveColumn(out IReadOnlyCollection<MoveLocation> locations)
+        private bool SolveMoveColumn(ISet<MoveLocation> locations)
         {
             for (int column = 0; column < 9; column ++)
             {
@@ -36,7 +35,7 @@ namespace Shipstone.Games.Sudoku.Solvers
                     if (startRows.Count == 1)
                     {
                         if (this.SolveMoveColumn(
-                            out locations,
+                            locations,
                             column,
                             n,
                             startRows
@@ -48,12 +47,11 @@ namespace Shipstone.Games.Sudoku.Solvers
                 }
             }
 
-            locations = null;
             return false;
         }
 
         private bool SolveMoveColumn(
-            out IReadOnlyCollection<MoveLocation> locations,
+            ISet<MoveLocation> locations,
             int column,
             int n,
             IEnumerable<int> startRows
@@ -61,7 +59,6 @@ namespace Shipstone.Games.Sudoku.Solvers
         {
             int startColumn = column - column % 3;
             int startRow = startRows.First();
-            HashSet<MoveLocation> locationSet = new HashSet<MoveLocation>();
                 
             for (int rowOffset = 0; rowOffset < 3; rowOffset ++)
             {
@@ -84,7 +81,7 @@ namespace Shipstone.Games.Sudoku.Solvers
                         continue;
                     }
 
-                    locationSet.Add(new MoveLocation(
+                    locations.Add(new MoveLocation(
                         currentRow,
                         currentColumn,
                         0,
@@ -92,18 +89,11 @@ namespace Shipstone.Games.Sudoku.Solvers
                     ));
                 }
             }
-
-            if (locationSet.Count > 0)
-            {
-                locations = locationSet;
-                return true;
-            }
-
-            locations = null;
-            return false;
+            
+            return locations.Count > 0;
         }
 
-        private bool SolveMoveRow(out IReadOnlyCollection<MoveLocation> locations)
+        private bool SolveMoveRow(ISet<MoveLocation> locations)
         {
             for (int row = 0; row < 9; row ++)
             {
@@ -127,7 +117,7 @@ namespace Shipstone.Games.Sudoku.Solvers
                     if (startColumns.Count == 1)
                     {
                         if (this.SolveMoveRow(
-                            out locations,
+                            locations,
                             row,
                             n,
                             startColumns
@@ -139,12 +129,11 @@ namespace Shipstone.Games.Sudoku.Solvers
                 }
             }
 
-            locations = null;
             return false;
         }
 
         private bool SolveMoveRow(
-            out IReadOnlyCollection<MoveLocation> locations,
+            ISet<MoveLocation> locations,
             int row,
             int n,
             IEnumerable<int> startColumns
@@ -152,7 +141,6 @@ namespace Shipstone.Games.Sudoku.Solvers
         {
             int startColumn = startColumns.First();
             int startRow = row - row % 3;
-            HashSet<MoveLocation> locationSet = new HashSet<MoveLocation>();
                 
             for (int rowOffset = 0; rowOffset < 3; rowOffset ++)
             {
@@ -175,7 +163,7 @@ namespace Shipstone.Games.Sudoku.Solvers
                         continue;
                     }
 
-                    locationSet.Add(new MoveLocation(
+                    locations.Add(new MoveLocation(
                         currentRow,
                         currentColumn,
                         0,
@@ -183,15 +171,8 @@ namespace Shipstone.Games.Sudoku.Solvers
                     ));
                 }
             }
-
-            if (locationSet.Count > 0)
-            {
-                locations = locationSet;
-                return true;
-            }
-
-            locations = null;
-            return false;
+            
+            return locations.Count > 0;
         }
     }
 }

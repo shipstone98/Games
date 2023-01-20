@@ -9,12 +9,12 @@ namespace Shipstone.Games.Sudoku.Solvers
         internal HiddenSingleSolver(StrategicSolver solver)
             : base(solver, Strategy.HiddenSingle) { }
 
-        private protected override bool SolveMove(out IReadOnlyCollection<MoveLocation> locations) =>
-            this.SolveMoveRow(out locations) ||
-            this.SolveMoveColumn(out locations) ||
-            this.SolveMoveBlock(out locations);
+        private protected override bool SolveMove(ISet<MoveLocation> locations) =>
+            this.SolveMoveRow(locations) ||
+            this.SolveMoveColumn(locations) ||
+            this.SolveMoveBlock(locations);
 
-        private bool SolveMoveBlock(out IReadOnlyCollection<MoveLocation> locations)
+        private bool SolveMoveBlock(ISet<MoveLocation> locations)
         {
             for (int startRow = 0; startRow < 9; startRow += 3)
             {
@@ -60,21 +60,23 @@ namespace Shipstone.Games.Sudoku.Solvers
                             this._Solver._Candidates[row, column] = null;
                             this._Solver._Grid[row, column] = n;
 
-                            MoveLocation location =
-                                new MoveLocation(row, column, n, null);
+                            locations.Add(new MoveLocation(
+                                row,
+                                column,
+                                n,
+                                null
+                            ));
 
-                            locations = new MoveLocation[] { location };
                             return true;
                         }
                     }
                 }
             }
 
-            locations = null;
             return false;
         }
 
-        private bool SolveMoveColumn(out IReadOnlyCollection<MoveLocation> locations)
+        private bool SolveMoveColumn(ISet<MoveLocation> locations)
         {
             for (int column = 0; column < 9; column ++)
             {
@@ -100,21 +102,16 @@ namespace Shipstone.Games.Sudoku.Solvers
                         int row = rows.First();
                         this._Solver._Candidates[row, column] = null;
                         this._Solver._Grid[row, column] = n;
-
-                        MoveLocation location =
-                            new MoveLocation(row, column, n, null);
-
-                        locations = new MoveLocation[] { location };
+                        locations.Add(new MoveLocation(row, column, n, null));
                         return true;
                     }
                 }
             }
 
-            locations = null;
             return false;
         }
 
-        private bool SolveMoveRow(out IReadOnlyCollection<MoveLocation> locations)
+        private bool SolveMoveRow(ISet<MoveLocation> locations)
         {
             for (int row = 0; row < 9; row ++)
             {
@@ -140,17 +137,12 @@ namespace Shipstone.Games.Sudoku.Solvers
                         int column = columns.First();
                         this._Solver._Candidates[row, column] = null;
                         this._Solver._Grid[row, column] = n;
-
-                        MoveLocation location =
-                            new MoveLocation(row, column, n, null);
-
-                        locations = new MoveLocation[] { location };
+                        locations.Add(new MoveLocation(row, column, n, null));
                         return true;
                     }
                 }
             }
 
-            locations = null;
             return false;
         }
     }

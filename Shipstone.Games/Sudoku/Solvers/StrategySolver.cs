@@ -19,7 +19,9 @@ namespace Shipstone.Games.Sudoku.Solvers
 
         internal bool Solve()
         {
-            if (!this.SolveMove(out IReadOnlyCollection<MoveLocation> locations))
+            HashSet<MoveLocation> locations = new HashSet<MoveLocation>();
+
+            if (!this.SolveMove(locations))
             {
                 return false;
             }
@@ -29,7 +31,7 @@ namespace Shipstone.Games.Sudoku.Solvers
             return true;
         }
 
-        private protected abstract bool SolveMove(out IReadOnlyCollection<MoveLocation> locations);
+        private protected abstract bool SolveMove(ISet<MoveLocation> locations);
 
         internal static StrategySolver CreateInstance(StrategicSolver solver, Strategy strategy)
         {
