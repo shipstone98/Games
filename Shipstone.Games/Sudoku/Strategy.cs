@@ -23,6 +23,11 @@ namespace Shipstone.Games.Sudoku
         /// <summary>
         /// Represents a pointing locked candidate. This occurs when, for a single block, a candidate appears in only either a single row or column.
         /// </summary>
-        PointingCandidate
+        PointingCandidate,
+
+        /// <summary>
+        /// Represents a claiming locked candidate. This occurs when, for a single row or column, a candidate appears in only a single block.
+        /// </summary>
+        ClaimingCandidate
     }
 }

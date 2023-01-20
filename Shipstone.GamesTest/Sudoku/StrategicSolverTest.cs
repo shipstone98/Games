@@ -452,6 +452,118 @@ namespace Shipstone.GamesTest.Sudoku
             Assert.AreEqual(0, solver.Moves.Count);
             solver.Sudoku.AssertEqual(cells);
         }
+
+        [TestMethod]
+        public void TestSolveSingle_ClaimingCandidate_ContainsColumn()
+        {
+            // Arrange
+            const Strategy STRATEGY = Strategy.ClaimingCandidate;
+            const int VALUE = 4;
+
+            ISet<Tuple<int, int>> indices = new HashSet<Tuple<int, int>>
+            {
+                new(0, 3),
+                new(0, 4),
+                new(1, 3),
+                new(1, 4),
+                new(2, 3),
+                new(2, 4)
+            };
+
+            Grid grid = Internals.ParseGrid(
+                "762008001980000006150000087478003169526009873319800425835001692297685314641932758",
+                out int[,] cells
+            );
+
+            StrategicSolver solver = new(grid);
+
+            // Act
+            bool isSolved = solver.SolveSingle(STRATEGY);
+
+            // Assert
+            Assert.IsTrue(isSolved);
+            Assert.AreEqual(1, solver.Moves.Count);
+            Move move = solver.Moves[0];
+            move.AssertEqual(6, solver, STRATEGY, 0);
+            solver.Sudoku.AssertEqual(cells);
+
+            foreach (MoveLocation location in move.Locations)
+            {
+                Assert.AreEqual(0, location.AddedNumber);
+                Assert.AreEqual(VALUE, location.RemovedCandidates.Single());
+
+                Assert.IsTrue(indices.Remove(new(
+                    location.Row,
+                    location.Column
+                )));
+            }
+        }
+
+        [TestMethod]
+        public void TestSolveSingle_ClaimingCandidate_ContainsRow()
+        {
+            // Arrange
+            const Strategy STRATEGY = Strategy.ClaimingCandidate;
+            const int VALUE = 4;
+
+            ISet<Tuple<int, int>> indices = new HashSet<Tuple<int, int>>
+            {
+                new(3, 0),
+                new(3, 1),
+                new(3, 2),
+                new(4, 0),
+                new(4, 1),
+                new(4, 2)
+            };
+
+            Grid grid = Internals.ParseGrid(
+                "791453826685721394200869571000008069000000083800390152000184637008672915167935248",
+                out int[,] cells
+            );
+
+            StrategicSolver solver = new(grid);
+
+            // Act
+            bool isSolved = solver.SolveSingle(STRATEGY);
+
+            // Assert
+            Assert.IsTrue(isSolved);
+            Assert.AreEqual(1, solver.Moves.Count);
+            Move move = solver.Moves[0];
+            move.AssertEqual(6, solver, STRATEGY, 0);
+            solver.Sudoku.AssertEqual(cells);
+
+            foreach (MoveLocation location in move.Locations)
+            {
+                Assert.AreEqual(0, location.AddedNumber);
+                Assert.AreEqual(VALUE, location.RemovedCandidates.Single());
+
+                Assert.IsTrue(indices.Remove(new(
+                    location.Row,
+                    location.Column
+                )));
+            }
+        }
+
+        [TestMethod]
+        public void TestSolveSingle_ClaimingCandidate_NotContains()
+        {
+            // Arrange
+            Grid grid = Internals.ParseGrid(
+                "000060000000042736006730040094000068000096407607050923100000085060080271005010094",
+                out int[,] cells
+            );
+
+            StrategicSolver solver = new(grid);
+
+            // Act
+            bool isSolved = solver.SolveSingle(Strategy.ClaimingCandidate);
+
+            // Assert
+            Assert.IsFalse(isSolved);
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEqual(cells);
+        }
 #endregion
     }
 }
