@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using Shipstone.Games.Sudoku.Solvers;
+using Shipstone.Games.Sudoku.Solving.Solvers;
 
-namespace Shipstone.Games.Sudoku
+namespace Shipstone.Games.Sudoku.Solving
 {
     /// <summary>
     /// Defines a method for solving a sudoku using strategy and pattern-matching.

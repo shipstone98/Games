@@ -1,4 +1,4 @@
-namespace Shipstone.Games.Sudoku
+namespace Shipstone.Games.Sudoku.Solving
 {
     /// <summary>
     /// Represents the possible strategies that may be used by a <see cref="StrategicSolver" /> when solving a sudoku.

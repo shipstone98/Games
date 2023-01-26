@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Shipstone.Games.Sudoku
+namespace Shipstone.Games.Sudoku.Solving
 {
     /// <summary>
     /// Represents a move made by a <see cref="StrategicSolver" />.
@@ -31,9 +31,9 @@ namespace Shipstone.Games.Sudoku
         public StrategicSolver Solver => this._Solver;
 
         /// <summary>
-        /// Gets the <see cref="Shipstone.Games.Sudoku.Strategy" /> that was used by <see cref="Move.Solver" /> to make the <see cref="Move" />.
+        /// Gets the <see cref="Shipstone.Games.Sudoku.Solving.Strategy" /> that was used by <see cref="Move.Solver" /> to make the <see cref="Move" />.
         /// </summary>
-        /// <value>The <see cref="Shipstone.Games.Sudoku.Strategy" /> that was used by <see cref="Move.Solver" /> to make the <see cref="Move" />.</value>
+        /// <value>The <see cref="Shipstone.Games.Sudoku.Solving.Strategy" /> that was used by <see cref="Move.Solver" /> to make the <see cref="Move" />.</value>
         public Strategy Strategy => this._Strategy;
 
         internal Move(

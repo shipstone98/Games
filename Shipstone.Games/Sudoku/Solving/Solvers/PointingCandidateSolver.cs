@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Shipstone.Games.Sudoku.Solvers
+namespace Shipstone.Games.Sudoku.Solving.Solvers
 {
     internal class PointingCandidateSolver : StrategySolver
     {

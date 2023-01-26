@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Shipstone.Games.Sudoku.Solvers
+namespace Shipstone.Games.Sudoku.Solving.Solvers
 {
     internal abstract class StrategySolver
     {

@@ -1,4 +1,4 @@
-namespace Shipstone.Games.Sudoku
+namespace Shipstone.Games.Sudoku.Solving
 {
     /// <summary>
     /// Defines a method for solving a sudoku.

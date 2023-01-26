@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Shipstone.Utilities.Collections;
 
-namespace Shipstone.Games.Sudoku
+namespace Shipstone.Games.Sudoku.Solving
 {
     /// <summary>
     /// Defines a method for solving a sudoku using recursion (a.k.a. "brute-forcing").
@@ -11,7 +11,7 @@ namespace Shipstone.Games.Sudoku
     public class RecursiveSolver : ISolver
     {
         private int _Count;
-        private readonly Grid _Grid;
+        internal readonly Grid _Grid;
 
         /// <summary>
         /// Gets the sudoku that the <see cref="RecursiveSolver" /> is attempting to solve.

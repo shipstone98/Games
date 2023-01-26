@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Shipstone.Games.Sudoku
+namespace Shipstone.Games.Sudoku.Solving
 {
     /// <summary>
     /// Represents a location in a <see cref="Move" />.
