@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shipstone.Games.Sudoku;
 using Shipstone.Games.Sudoku.Solving;
 
-namespace Shipstone.GamesTest.Sudoku
+namespace Shipstone.GamesTest.Sudoku.Solving
 {
     [TestClass]
     public class RecursiveSolverTest
