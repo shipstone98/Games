@@ -71,6 +71,48 @@ namespace Shipstone.Games.Sudoku.Solving
         bool ISolver.Solve() => throw new NotImplementedException();
 
         /// <summary>
+        /// Attempt to solve <see cref="StrategicSolver.Sudoku" /> using the specified <see cref="Strategy" /> values.
+        /// </summary>
+        /// <param name="strategies">A collection containing the <see cref="Strategy" /> values to use when making moves.</param>
+        /// <returns><c>true</c> if <see cref="StrategicSolver.Sudoku" /> was solved successfully using <c><paramref name="strategies" /></c>; otherwise, <c>false</c>.</returns>
+        /// <exception cref="ArgumentException"><c><paramref name="strategies" /></c> is empty -or- <c><paramref name="strategies" /></c> contains one or more elements that are not any of the <see cref="Strategy" /> values.</exception>
+        /// <exception cref="ArgumentNullException"><c><paramref name="strategies" /></c> is <c>null</c>.</exception>
+        public bool Solve(IEnumerable<Strategy> strategies)
+        {
+            if (strategies is null)
+            {
+                throw new ArgumentNullException(
+                    nameof (strategies),
+                    $"{nameof (strategies)} is null."
+                );
+            }
+
+            IReadOnlyCollection<Strategy> sortedStrategies =
+                new SortedSet<Strategy>(strategies);
+
+            if (sortedStrategies.Count == 0)
+            {
+                throw new ArgumentException(
+                    $"{nameof (strategies)} is empty.",
+                    nameof (strategies)
+                );
+            }
+
+            foreach (Strategy strategy in sortedStrategies)
+            {
+                if (!Enum.IsDefined(typeof (Strategy), strategy))
+                {
+                    throw new ArgumentException(
+                        $"{nameof (strategies)} contains one or more elements that are not any of the Strategy values.",
+                        nameof (strategies)
+                    );
+                }
+            }
+                
+            return this.SolveUsing(sortedStrategies);
+        }
+
+        /// <summary>
         /// Attempts to make a single move using the specified <see cref="Strategy" /> to partially complete <see cref="StrategicSolver.Sudoku" />.
         /// </summary>
         /// <param name="strategy">The <see cref="Strategy" /> to use when making the move.</param>
@@ -87,6 +129,24 @@ namespace Shipstone.Games.Sudoku.Solving
                 StrategySolver.CreateInstance(this, strategy);
 
             return solver.Solve();
+        }
+
+        internal bool SolveUsing(IEnumerable<Strategy> strategies)
+        {
+            IEnumerator<Strategy> enumerator = strategies.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                StrategySolver solver =
+                    StrategySolver.CreateInstance(this, enumerator.Current);
+
+                if (solver.Solve())
+                {
+                    enumerator.Reset();
+                }
+            }
+
+            return this._Grid.IsComplete;
         }
     }
 }

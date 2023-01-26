@@ -53,6 +53,131 @@ namespace Shipstone.GamesTest.Sudoku.Solving
             Assert.AreEqual("sudoku", ex.ParamName);
         }
 
+#region Solve method
+#region Invalid parameters
+        [TestMethod]
+        public void TestSolve_Strategies_Invalid_ContainsInvalid()
+        {
+            // Arrange
+            Grid grid = new();
+            StrategicSolver solver = new(grid);
+            IEnumerable<Strategy> strategies = new Strategy[] { (Strategy) 0 };
+
+            // Act
+            ArgumentException ex =
+                Assert.ThrowsException<ArgumentException>(() =>
+                    solver.Solve(strategies));
+
+            // Assert
+            Assert.AreEqual(
+                "strategies contains one or more elements that are not any of the Strategy values. (Parameter 'strategies')",
+                ex.Message
+            );
+
+            Assert.AreEqual("strategies", ex.ParamName);
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEmpty();
+        }
+
+        [TestMethod]
+        public void TestSolve_Strategies_Invalid_Empty()
+        {
+            // Arrange
+            Grid grid = new();
+            StrategicSolver solver = new(grid);
+            IEnumerable<Strategy> strategies = Array.Empty<Strategy>();
+
+            // Act
+            ArgumentException ex =
+                Assert.ThrowsException<ArgumentException>(() =>
+                    solver.Solve(strategies));
+
+            // Assert
+            Assert.AreEqual(
+                "strategies is empty. (Parameter 'strategies')",
+                ex.Message
+            );
+
+            Assert.AreEqual("strategies", ex.ParamName);
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEmpty();
+        }
+
+        [TestMethod]
+        public void TestSolve_Strategies_Invalid_Null()
+        {
+            // Arrange
+            Grid grid = new();
+            StrategicSolver solver = new(grid);
+
+            // Act
+            ArgumentException ex =
+                Assert.ThrowsException<ArgumentNullException>(() =>
+                    solver.Solve(null as IEnumerable<Strategy>));
+
+            // Assert
+            Assert.AreEqual(
+                "strategies is null. (Parameter 'strategies')",
+                ex.Message
+            );
+
+            Assert.AreEqual("strategies", ex.ParamName);
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEmpty();
+        }
+#endregion
+
+#region Valid parameters
+        [TestMethod]
+        public void TestSolve_Strategies_Valid_NotSolveable()
+        {
+            // Arrange
+            Grid grid = Internals.ParseGrid(
+                "412736589000000106568010370000850210100000008087090000030070865800000000000908401",
+                out int[,] cells
+            );
+
+            StrategicSolver solver = new(grid);
+
+            IEnumerable<Strategy> strategies =
+                new Strategy[] { Strategy.FullHouse };
+
+            // Act
+            bool isSolved = solver.Solve(strategies);
+
+            // Assert
+            Assert.IsFalse(isSolved);
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEqual(cells);
+        }
+
+        [TestMethod]
+        public void TestSolve_Strategies_Valid_Solveable() => throw new NotImplementedException();
+
+        [TestMethod]
+        public void TestSolve_Strategies_Valid_Solved()
+        {
+            // Arrange
+            Grid grid = Internals.ParseGrid(
+                "158763924347928165926415873469157238281396547735284691513672489694831752872549316",
+                out int[,] cells
+            );
+
+            StrategicSolver solver = new(grid);
+
+            IEnumerable<Strategy> strategies =
+                new Strategy[] { Strategy.FullHouse };
+
+            // Act
+            bool isSolved = solver.Solve(strategies);
+
+            // Assert
+            Assert.AreEqual(0, solver.Moves.Count);
+            solver.Sudoku.AssertEqual(cells);
+        }
+#endregion
+#endregion
+
 #region SolveSingle method
         [TestMethod]
         public void TestSolveSingle_Invalid()
